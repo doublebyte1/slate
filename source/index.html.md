@@ -1,15 +1,14 @@
 ---
-title: API Reference
+title: bbox
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
   - python
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+  - <a href='#'>Bbox</a>
+  - <a href='https://blocks.ogc.org/register.html'>Building Blocks register</a>
 
 includes:
   - errors
@@ -19,57 +18,73 @@ search: true
 code_clipboard: true
 
 meta:
-  - name: description
-    content: Documentation for the Kittn API
+  - name: bbox parameter
+    content: Description of the bbox buidling block
 ---
 
-# Introduction
+# Overview
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+The bbox query parameter provides a simple mechanism for filtering resources based on their location. It selects all resources that intersect a rectangle (map view) or box (including height information).
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+# Examples
 
-# Authentication
+> Using a bounding box:
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+```shell
+curl \
+"https://demo.pygeoapi.io/master/collections/lakes/items?\
+bbox=-124.7844079,24.7433195,-66.9513812,49.3457868"
 ```
 
 ```python
-import kittn
+class Bbox:
+  def __init__(self,x1,y1,x2,y2):
+    self.x1 = x1
+    self.y1 = y1
+    self.x2 = x2
+    self.y2 = y2
+    self.min = [x1,y1]
+    self.max = [x2,y2]
 
-api = kittn.authorize('meowmeowmeow')
-```
+  def getMin(self):
+    return self.min
+  def getMax(self):
+    return self.max
+  def getLowerLon(self):
+    return self.x1
+  def getLowerLat(self):
+    return self.y1
+  def getUpperLon(self):
+    return self.x2
+  def getUpperLat(self):
+    return self.y2
+  def getBounds(self):
+    return [self.x1,self.y1,self.x2,self.y2]
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
+bbox = Bbox(-124.7844079,24.7433195,-66.9513812,49.3457868)
+
+bbox.getLowerLat()
 ```
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
+console.log("Hello World!")
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+The following bounding box parameter includes the 48 contiguous states of the United States of America.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+`bbox=-124.7844079,24.7433195,-66.9513812,49.3457868`
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
 
-`Authorization: meowmeowmeow`
+![Bounding box example](/images/bbox_map.png "© OpenStreetMap contributors, CC-BY-SA; https://www.openstreetmap.org/copyright")
 
-<aside class="notice">
+
+<!-- <aside class="notice">
 You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+</aside> -->
+
+# Description
+
 
 # Kittens
 
@@ -83,10 +98,8 @@ api.kittens.get
 ```
 
 ```python
-import kittn
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+
 ```
 
 ```shell
